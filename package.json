@@ -1,0 +1,17 @@
+{
+    "name": "next-three",
+    "version": "0.0.1",
+    "description": "Three.js client with Next.js",
+    "main": "index.js",
+    "scripts": {
+        "dev": "next"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "next": "^9.3.6",
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1",
+        "three": "^0.116.1"
+    }
+}
