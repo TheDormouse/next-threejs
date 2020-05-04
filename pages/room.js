@@ -9,6 +9,7 @@ export default (props) => {
     const [width, setWidth] = useState(null)
     const [floor, setFloor] = useState([])
     const [playerPos, setPlayerPos] = useState([1, 1])
+    const [playerPath, setPlayerPath] = useState([])
     const { camera } = useThree();
     const canvasref = useRef(null);
 
@@ -39,10 +40,11 @@ var grid = new PF.Grid(matrix);
     }, [])
 
     function movePlayer(pos){
-        console.log(pos)
         var finder = new PF.AStarFinder();
         let gridclone = grid.clone()
-        let path = finder.findPath(playerPos[0], playerPos[1], pos[0], pos[1], gridclone)
+        let path = finder.findPath(playerPos[0] + 3, playerPos[1] + 3, pos[0] + 3, pos[1] + 3, gridclone)
+        console.log(path)
+        setPlayerPath(path)
         setPlayerPos(pos)
     }
 
@@ -70,18 +72,19 @@ var grid = new PF.Grid(matrix);
         {matrix.map((row, x) => {
             return row.map((col, y) => {
                 return React.createElement(Models.Floor, {
-                    position: [x, -1, y],
+                    position: [x - 3, -1, y - 3],
                     key: [x, y],
                     color: col ? 'orange' : 'hotpink',
                     //this needs to be raycaster
-                    onClick: (e) => {movePlayer([e.object.position.x, e.object.position.z]); console.log(e)}
+                    onClick: (e) => {movePlayer([e.object.position.x, e.object.position.z]);}
                 })
             })
                 
         })}
         {React.createElement(Models.Sphere, {
             newX: playerPos[0],
-            newY: playerPos[1]
+            newY: playerPos[1],
+            path: playerPath
         })}
         </Canvas>
     )

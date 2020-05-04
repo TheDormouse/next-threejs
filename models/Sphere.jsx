@@ -1,5 +1,6 @@
 import {useState, useRef, useEffect} from 'react'
 import { Canvas, useFrame, useThree } from 'react-three-fiber'
+import next from 'next'
 
 export default (props) => {
       // This reference will give us direct access to the mesh
@@ -16,19 +17,30 @@ export default (props) => {
     let y = mesh.current.position.z
     let parsex = Number.parseFloat(x).toFixed(2)
     let parsey = Number.parseFloat(y).toFixed(2)
+    if(props.path.length > 1){
+      let path = props.path;
+        if(parsex < path[0][0]) {
+          mesh.current.position.x += .1
+        }
+        if(parsex > path[0][0]){
+          mesh.current.position.x -= .1
+        }
+        if(parsey < path[0][1]) {
+          mesh.current.position.z += .1
+        }
+        if(parsey > path[0][1]){
+          mesh.current.position.z -= .1
+        }
+        if(parsex == x && parsey == y) {
+          path.shift();
+          console.log('next square: ', path.length + ' left')
+        }
+        else {
+          console.log('??')
+        }
+        
+    }
     
-    if(parsex < props.newX) {
-      mesh.current.position.x += .1
-    }
-    if(parsex > props.newX){
-      mesh.current.position.x -= .1
-    }
-    if(parsey < props.newY) {
-      mesh.current.position.z += .1
-    }
-    if(parsey > props.newY){
-      mesh.current.position.z -= .1
-    }
   }
   )
   
