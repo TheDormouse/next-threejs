@@ -1,14 +1,16 @@
 import {useState, useRef, useEffect} from 'react'
 import { Canvas, useFrame, useThree } from 'react-three-fiber'
 import Models from '../models'
-import Floor from '../models/Floor'
-import { OrthographicCamera } from 'three'
+import * as PF from 'pathfinding'
+import * as THREE from 'three'
 
 export default (props) => {
     const [height, setHeight] = useState(null)
     const [width, setWidth] = useState(null)
     const [floor, setFloor] = useState([])
+    const [playerPos, setPlayerPos] = useState([1, 1])
     const { camera } = useThree();
+    const canvasref = useRef(null);
 
     const matrix = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
@@ -22,6 +24,9 @@ export default (props) => {
     [0, 1, 1, 1, 1, 0, 1, 1, 1, 0],
     [0, 0, 0, 0, 0, 0, 1, 1, 1, 0], 
 ]
+var grid = new PF.Grid(matrix);
+
+
 
     useEffect(() => {
         setHeight(window.innerHeight)
@@ -30,11 +35,20 @@ export default (props) => {
             setHeight(window.innerHeight)
             setWidth(window.innerWidth)
         })
+
     }, [])
+
+    function movePlayer(pos){
+        console.log(pos)
+        var finder = new PF.AStarFinder();
+        let gridclone = grid.clone()
+        let path = finder.findPath(playerPos[0], playerPos[1], pos[0], pos[1], gridclone)
+        setPlayerPos(pos)
+    }
 
     //- d * aspect, d * aspect, d, - d, 1, 1000
     return(
-        <Canvas style={{height:height,width:width}} orthographic camera={
+        <Canvas ref={canvasref} style={{height:height,width:width}} orthographic camera={
             {
                 position:[20, 20, 20], 
                 rotation: { 
@@ -56,13 +70,18 @@ export default (props) => {
         {matrix.map((row, x) => {
             return row.map((col, y) => {
                 return React.createElement(Models.Floor, {
-                    position: [x - 3, 0, y - 3]
+                    position: [x, -1, y],
+                    key: [x, y],
+                    color: col ? 'orange' : 'hotpink',
+                    //this needs to be raycaster
+                    onClick: (e) => {movePlayer([e.object.position.x, e.object.position.z]); console.log(e)}
                 })
             })
                 
         })}
         {React.createElement(Models.Sphere, {
-            position: [0, 1, 0]
+            newX: playerPos[0],
+            newY: playerPos[1]
         })}
         </Canvas>
     )
