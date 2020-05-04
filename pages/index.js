@@ -1,7 +1,5 @@
 import {useState, useRef, useEffect} from 'react'
 import { Canvas, useFrame, useThree } from 'react-three-fiber'
-import Box from '../models/Box';
-import Sphere from '../models/Sphere'
 import Models from '../models'
 
 export default (props) => {
