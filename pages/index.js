@@ -6,6 +6,7 @@ export default (props) => {
     const [height, setHeight] = useState(null)
     const [width, setWidth] = useState(null)
     const [objects, setObjects] = useState([])
+    const [showModal, setShowModal] = useState(false)
 
     function getRandomInt(allowNeg ,max) {
         let num =  Math.floor(Math.random() * Math.floor(max)) + 1;
@@ -64,6 +65,26 @@ export default (props) => {
             position: absolute;
             bottom: 0px;
             z-index: 2;
+            color: white;
+        }
+        .modal {
+            width: 400px;
+            height: 400px;
+            border-radius: 10px;
+            z-index: 2;
+            position: absolute;
+            right: 0px;
+            visibility: ${showModal ? 'visible' : 'hidden'};
+            background-color: blue;
+            display: flex;
+        }
+        .modal .col {
+            height: 200px;
+            padding: 5px;
+            margin: 5px;
+            flex: 1;
+            background-color: white;
+            align-content: center;
         }
         `}</style>
         <style jsx global> {`
@@ -71,14 +92,18 @@ export default (props) => {
           margin: 0px;
         }
       `}</style>
+      <div className='modal'>
+            <div className='col'><Canvas style={{height: 100, width: 100}}><ambientLight /><pointLight position={[10, 10, 10]} />{React.createElement(Models.Box, {position: [0, 0, 0]})}</Canvas> <p>Cube</p></div>
+            <div className='col'><Canvas style={{height: 100, width: 100}}><ambientLight /><pointLight position={[10, 10, 10]} />{React.createElement(Models.Sphere, {position: [0, 0, 0]})}</Canvas><p>Sphere</p></div>
+      </div>
         <div className='overlay'>
             <button onClick={() => addObject()}>Add Object</button>
             <button onClick={() => removeObject()}>Remove Object</button>
+            <button onClick={() => setShowModal(!showModal)}>Show Modal</button>
             <p>Number of objects: {objects.length}</p>
+            <p><a href='/room'>Room demo</a></p>
             </div>
-            <Canvas style={{height:height,width:width}}>
-        
-      
+        <Canvas style={{height:height,width:width}}>
         <ambientLight />
         <pointLight position={[10, 10, 10]} />
         {objects && objects.map((object, i) => {
