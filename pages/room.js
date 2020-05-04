@@ -40,9 +40,9 @@ var grid = new PF.Grid(matrix);
 
     function movePlayer(pos){
         console.log(pos)
-        var finder = new PF.AStarFinder();
+        /*var finder = new PF.AStarFinder();
         let gridclone = grid.clone()
-        let path = finder.findPath(playerPos[0], playerPos[1], pos[0], pos[1], gridclone)
+        let path = finder.findPath(playerPos[0], playerPos[1], pos[0], pos[1], gridclone)*/
         setPlayerPos(pos)
     }
 
@@ -70,7 +70,7 @@ var grid = new PF.Grid(matrix);
         {matrix.map((row, x) => {
             return row.map((col, y) => {
                 return React.createElement(Models.Floor, {
-                    position: [x, -1, y],
+                    position: [x - 3, -1.2, y - 3],
                     key: [x, y],
                     color: col ? 'orange' : 'hotpink',
                     //this needs to be raycaster

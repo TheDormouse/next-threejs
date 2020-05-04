@@ -18,16 +18,16 @@ export default (props) => {
     let parsey = Number.parseFloat(y).toFixed(2)
     
     if(parsex < props.newX) {
-      mesh.current.position.x += .1
+      mesh.current.position.x += .05
     }
     if(parsex > props.newX){
-      mesh.current.position.x -= .1
+      mesh.current.position.x -= .05
     }
     if(parsey < props.newY) {
-      mesh.current.position.z += .1
+      mesh.current.position.z += .05
     }
     if(parsey > props.newY){
-      mesh.current.position.z -= .1
+      mesh.current.position.z -= .05
     }
   }
   )
